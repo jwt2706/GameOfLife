@@ -6,12 +6,14 @@ import os
 ARENA_WIDTH = 25
 ARENA_HEIGHT = 25
 
-CELL_SPAWN_RATE = 0.5 #0.07
+CELL_SPAWN_RATE = 0.2 #0.07
 
 ALIVE_CELL = "*"
-DEAD_CELL = "."
+DEAD_CELL = " "
 BORDER = "#"
 
+# delay between each update, in seconds
+DELAY = 0.5
 
 def generate_arena():
 
@@ -65,13 +67,13 @@ def update_arena(arena):
 
 def get_neighborhood_population(arena, x, y):
     num_of_neighbors = 0
-    neighbor_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    neighbor_directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
     for direction in neighbor_directions:
         neighbor_x = x + direction[0]
         neighbor_y = y + direction[1]
         
         # just a sanity check to make sure we aren't out of bound
-        if (neighbor_x > 0 and neighbor_x < ARENA_WIDTH) and (neighbor_y > 0 and neighbor_y < ARENA_HEIGHT):
+        if (neighbor_x >= 0 and neighbor_x < ARENA_WIDTH) and (neighbor_y >= 0 and neighbor_y < ARENA_HEIGHT):
             if (arena[neighbor_x][neighbor_y] == ALIVE_CELL):
                 num_of_neighbors += 1
     return num_of_neighbors
@@ -88,5 +90,5 @@ arena = generate_arena()
 while (True):
     print_arena(arena)
     arena = update_arena(arena)
-    sleep(1)
+    sleep(DELAY)
     os.system('clear')
